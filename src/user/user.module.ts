@@ -6,16 +6,20 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 import { UserController } from './user.controller';
-import { PrismaModule } from 'src/prisma/prisma.module';
 import { UserService } from './user.service';
 import { UserIdCheckMiddleware } from 'src/middlewares/user-id-check.middleware';
 import { AuthModule } from 'src/auth/auth.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from './entity/user.entity';
 
 @Module({
-  imports: [PrismaModule, forwardRef(() => AuthModule)],
+  imports: [
+    TypeOrmModule.forFeature([UserEntity]),
+    forwardRef(() => AuthModule),
+  ],
   controllers: [UserController],
   providers: [UserService],
-  exports: [UserService],
+  exports: [UserService, UserEntity],
 })
 export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
