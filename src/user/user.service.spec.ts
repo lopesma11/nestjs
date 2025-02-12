@@ -1,8 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { UserEntity } from './entity/user.entity';
 import { userRepositoryMock } from '../testing/user-repository-mock';
+import { CreateUserDTO } from './dto/create-user.dto';
+import { Role } from '../enums/role.enum';
+import { userEntityList } from '../testing/user-entity-list-mock';
+import { createUserDTO } from '../testing/create-user-dto.mock';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -17,4 +19,16 @@ describe('UserService', () => {
   test('Validar a definição', () => {
     expect(userService).toBeDefined();
   });
+
+  describe('Create', () => {
+    test('method create', async () => {
+      const result = await userService.createUser(createUserDTO);
+
+      expect(result).toEqual(userEntityList[0]);
+    });
+  });
+
+  describe('Read', () => {});
+  describe('Update', () => {});
+  describe('Delete', () => {});
 });
